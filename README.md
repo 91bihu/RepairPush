@@ -4,58 +4,58 @@
   此Demo是第三方需要嵌入爱推修H5示例。
   
  ## Usage
- **Step1**
-  调联合登录接口  接口地址：https://91bihu.gitbooks.io/bihu_uniteapp_doc/chapter1/lian-he-deng-lu-jie-kou.html
-  如下
+ **Step1**  
+  调联合登录接口  接口地址：https://91bihu.gitbooks.io/bihu_uniteapp_doc/chapter1/lian-he-deng-lu-jie-kou.html  
+  如下   
   
- >   HashMap<String,String> params=new HashMap<>();
-        HashMap<String,String> paramsarr=new HashMap<>();
-        params.put("AgentId","102");
-        params.put("UserName","test1");
-        params.put("Timestamp",(int) (System.currentTimeMillis() / 1000)+"");
-        params.put("UniqueCode", SystemUtils.getUUID(this));
-        params.put("ExpireTime",((int) (System.currentTimeMillis() / 1000+3000))+"");
-        paramsarr.putAll(params);
-        paramsarr.put("SecretKey","60a78c69d89");
-        StringBuffer requestParams = HttpUtils.spellPostParams(paramsarr);
-        params.put("SecCode", MD5.encode(requestParams.toString()));
-        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-        final String requestBody= GsonUtil.gson().toJson(params);
-        Request request = new Request.Builder()
-                .url("http://192.168.5.19:9094/api/unite/LoginAPP")
-                .post(RequestBody.create(mediaType, requestBody))
-                .build();
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("", "onFailure: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
-                Headers headers = response.headers();
-                for (int i = 0; i < headers.size(); i++) {
-                    Log.d(TAG, headers.name(i) + ":" + headers.value(i));
+            HashMap<String,String> params=new HashMap<>();
+            HashMap<String,String> paramsarr=new HashMap<>();
+            params.put("AgentId","102");
+            params.put("UserName","test1");
+            params.put("Timestamp",(int) (System.currentTimeMillis() / 1000)+"");
+            params.put("UniqueCode", SystemUtils.getUUID(this));
+            params.put("ExpireTime",((int) (System.currentTimeMillis() / 1000+3000))+"");
+            paramsarr.putAll(params);
+            paramsarr.put("SecretKey","60a78c69d89");
+            StringBuffer requestParams = HttpUtils.spellPostParams(paramsarr);
+            params.put("SecCode", MD5.encode(requestParams.toString()));
+            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+            final String requestBody= GsonUtil.gson().toJson(params);
+            Request request = new Request.Builder()
+                    .url("http://192.168.5.19:9094/api/unite/LoginAPP")
+                    .post(RequestBody.create(mediaType, requestBody))
+                    .build();
+            OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d("", "onFailure: " + e.getMessage());
                 }
-                ResponseRepair responseRepair =GsonUtil.gson().fromJson(response.body().string(),ResponseRepair.class);
-                PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.USER_NAME, responseRepair.getUserName());
-                PrefUtils.saveInt(getApplicationContext(),PrefUtils.KEY.AGENT_ID, responseRepair.getAgentId());
-                PrefUtils.saveInt(getApplicationContext(),PrefUtils.KEY.LOGIN_STATUS, responseRepair.getLoginStatus());
-                PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.TOKEN, responseRepair.getToken());
-                PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.AGENT_NAME, responseRepair.getAgentName());
-                PrefUtils.saveInt(getApplicationContext(),PrefUtils.KEY.TOP_AGENT_ID, responseRepair.getTopAgentId());
-                PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.REPEAT_QUOTE, responseRepair.getRepeatQuote());
-                //可传对象，也可以本地保存读取
-                Intent intent=new Intent(mContext,RepairPushActivity.class);
-                //标题
-                intent.putExtra(Constant.PUSH_REPAIR_TITLE,"预约爱推修");
-                //爱推修地址
-                intent.putExtra(Constant.URL_REPAIR_URL,"http://192.168.5.19:7776");
-                startActivity(intent);
-            }
-        }); 
+              @Override
+              public void onResponse(Call call, Response response) throws IOException {
+                  Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
+                  Headers headers = response.headers();
+                  for (int i = 0; i < headers.size(); i++) {
+                      Log.d(TAG, headers.name(i) + ":" + headers.value(i));
+                  }
+                  ResponseRepair responseRepair =GsonUtil.gson().fromJson(response.body().string(),ResponseRepair.class);
+                  PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.USER_NAME, responseRepair.getUserName());
+                  PrefUtils.saveInt(getApplicationContext(),PrefUtils.KEY.AGENT_ID, responseRepair.getAgentId());
+                  PrefUtils.saveInt(getApplicationContext(),PrefUtils.KEY.LOGIN_STATUS, responseRepair.getLoginStatus());
+                  PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.TOKEN, responseRepair.getToken());
+                  PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.AGENT_NAME, responseRepair.getAgentName());
+                  PrefUtils.saveInt(getApplicationContext(),PrefUtils.KEY.TOP_AGENT_ID, responseRepair.getTopAgentId());
+                  PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.REPEAT_QUOTE, responseRepair.getRepeatQuote());
+                  //可传对象，也可以本地保存读取
+                  Intent intent=new Intent(mContext,RepairPushActivity.class);
+                  //标题
+                  intent.putExtra(Constant.PUSH_REPAIR_TITLE,"预约爱推修");
+                  //爱推修地址
+                  intent.putExtra(Constant.URL_REPAIR_URL,"http://192.168.5.19:7776");
+                  startActivity(intent);
+              }
+          }); 
+          
         
    **Step2**
    在RepairPushActivity类配置跳转地址
