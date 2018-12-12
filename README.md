@@ -7,6 +7,7 @@
  **Step1**
   调联合登录接口  接口地址：https://91bihu.gitbooks.io/bihu_uniteapp_doc/chapter1/lian-he-deng-lu-jie-kou.html
   如下
+  
  >   HashMap<String,String> params=new HashMap<>();
         HashMap<String,String> paramsarr=new HashMap<>();
         params.put("AgentId","102");
@@ -58,6 +59,7 @@
         
    **Step2**
    在RepairPushActivity类配置跳转地址
+   >
          /**
          * 返回首页方法
          */
