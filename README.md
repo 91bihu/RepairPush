@@ -103,6 +103,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 (Frequently Asked Questions)FAQ
-##Bugs Report and Help
+## Bugs Report and Help
 
 If you find any bug when using project, please report here. Thanks for helping us building a better one.
