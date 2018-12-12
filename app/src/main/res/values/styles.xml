@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/statusBar</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/bgPrimary</item>
+        <item name="android:typeface">normal</item>
+
+        <!--<item name="android:windowAnimationStyle">@style/activityAnimation</item>-->
+    </style>
+
+    <!-- 标题 -->
+    <style name="FontTitle">
+        <item name="android:textSize">@dimen/text_size_17</item>
+        <item name="android:textColor">@color/primaryTitle1</item>
+    </style>
+
+</resources>
