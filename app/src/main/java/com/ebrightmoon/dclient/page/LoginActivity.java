@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.ebrightmoon.dclient.R;
 import com.ebrightmoon.dclient.bean.ResponseRepair;
+import com.ebrightmoon.dclient.util.Constant;
 import com.ebrightmoon.dclient.util.GsonUtil;
 import com.ebrightmoon.dclient.util.HttpUtils;
 import com.ebrightmoon.dclient.util.MD5;
@@ -113,7 +114,10 @@ public class LoginActivity extends AppCompatActivity {
                 PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.AGENT_NAME, responseRepair.getAgentName());
                 PrefUtils.saveInt(getApplicationContext(),PrefUtils.KEY.TOP_AGENT_ID, responseRepair.getTopAgentId());
                 PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.REPEAT_QUOTE, responseRepair.getRepeatQuote());
-                startActivity(new Intent(mContext,RepairPushActivity.class));
+                Intent intent=new Intent(mContext,RepairPushActivity.class);
+                intent.putExtra(Constant.PUSH_REPAIR_TITLE,"预约爱推修");
+                intent.putExtra(Constant.URL_REPAIR_URL,"http://192.168.5.19:7776");
+                startActivity(intent);
             }
         });
 

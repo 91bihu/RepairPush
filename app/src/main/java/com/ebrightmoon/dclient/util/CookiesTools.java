@@ -60,15 +60,15 @@ public class CookiesTools {
      * @param context
      */
     public static void removeCookie(Context context) {
-        CookieSyncManager.createInstance(context);
+        CookieSyncManager.createInstance(context.getApplicationContext());
         CookieManager cookieManager = CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cookieManager.removeAllCookie();
             cookieManager.removeSessionCookies(null);
+            cookieManager.removeAllCookie();
             cookieManager.flush();
         } else {
+            cookieManager.removeSessionCookies(null);
             cookieManager.removeAllCookie();
-            cookieManager.removeSessionCookie();
             CookieSyncManager.getInstance().sync();
         }
     }

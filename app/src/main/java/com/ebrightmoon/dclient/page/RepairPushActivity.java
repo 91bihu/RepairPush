@@ -2,6 +2,7 @@ package com.ebrightmoon.dclient.page;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ebrightmoon.dclient.util.Constant;
 import com.ebrightmoon.dclient.view.ProgressWebView;
 import com.ebrightmoon.dclient.R;
 import com.ebrightmoon.dclient.util.CookiesTools;
@@ -33,7 +35,7 @@ public class RepairPushActivity extends AppCompatActivity {
 
     private ProgressWebView mWebView;
     private String title;
-    private String url;
+    private String rePairUrl;
     private FrameLayout mWebViewContent;
     private Context mContext;
 
@@ -69,9 +71,9 @@ public class RepairPushActivity extends AppCompatActivity {
 
     @SuppressLint("JavascriptInterface")
     public void initView() {
-        title = "测试";
-        url = "http://192.168.5.19:7776";
-        initTitleBar(title);
+        title = getIntent().getStringExtra(Constant.PUSH_REPAIR_TITLE);
+        rePairUrl = getIntent().getStringExtra(Constant.URL_REPAIR_URL);
+        initTitleBar(this.title);
         mWebViewContent = (FrameLayout) findViewById(R.id.fl_content);
         mWebView = new ProgressWebView(this, null);
         mWebViewContent.addView(mWebView);
@@ -123,9 +125,6 @@ public class RepairPushActivity extends AppCompatActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                //获取cookies
-                CookieManager cookieManager = CookieManager.getInstance();
-                String CookieStr = cookieManager.getCookie(url);
                 super.onPageFinished(view, url);
 
             }
@@ -150,17 +149,16 @@ public class RepairPushActivity extends AppCompatActivity {
                 return false;
             }
         });
-        CookiesTools.setCookies(mContext, url, "agentAccount_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.USER_NAME, ""));
-        CookiesTools.setCookies(mContext, url, "fromagent=" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0));
-        CookiesTools.setCookies(mContext, url, "s_LoginStatus_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getInt(mContext, PrefUtils.KEY.LOGIN_STATUS, 0));
-        CookiesTools.setCookies(mContext, url, "agent_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getInt(mContext, PrefUtils.KEY.AGENT_ID, 0));
-//        CookiesTools.setCookies(mContext, url, "s_token_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.TOKEN, ""));
-        CookiesTools.setCookies(mContext, url, "isHavaLicenseno_" + PrefUtils.getInt(mContext, PrefUtils.KEY.AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.REPEAT_QUOTE, ""));
-        CookiesTools.setCookies(mContext, url, "tx_login_token_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.TOKEN, ""));
-        CookiesTools.setCookies(mContext, url, "tx_login_agentname_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.AGENT_NAME, ""));
-        CookiesTools.setCookies(mContext, url, "s_token_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.TOKEN, ""));
-        mWebView.addJavascriptInterface(new JavaScriptInterface(this), "APP");
-        mWebView.loadUrl(url);
+        CookiesTools.setCookies(mContext, rePairUrl, "agentAccount_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.USER_NAME, ""));
+        CookiesTools.setCookies(mContext, rePairUrl, "fromagent=" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0));
+        CookiesTools.setCookies(mContext, rePairUrl, "s_LoginStatus_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getInt(mContext, PrefUtils.KEY.LOGIN_STATUS, 0));
+        CookiesTools.setCookies(mContext, rePairUrl, "agent_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getInt(mContext, PrefUtils.KEY.AGENT_ID, 0));
+        CookiesTools.setCookies(mContext, rePairUrl, "isHavaLicenseno_" + PrefUtils.getInt(mContext, PrefUtils.KEY.AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.REPEAT_QUOTE, ""));
+        CookiesTools.setCookies(mContext, rePairUrl, "tx_login_token_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.TOKEN, ""));
+        CookiesTools.setCookies(mContext, rePairUrl, "tx_login_agentname_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.AGENT_NAME, ""));
+        CookiesTools.setCookies(mContext, rePairUrl, "s_token_" + PrefUtils.getInt(mContext, PrefUtils.KEY.TOP_AGENT_ID, 0) + "=" + PrefUtils.getString(mContext, PrefUtils.KEY.TOKEN, ""));
+        mWebView.addJavascriptInterface(new JavaScriptInterface(mContext), "AndroidAPP");
+        mWebView.loadUrl(rePairUrl);
     }
 
 
@@ -247,24 +245,30 @@ public class RepairPushActivity extends AppCompatActivity {
         public JavaScriptInterface(Context context) {
             this.context = context;
         }
-    }
 
-    //返回主页方法
-    @JavascriptInterface
-    public void goHome() {
+        /**
+         * 返回首页方法
+         */
+        @JavascriptInterface
+        public void goHome() {
+            //替换成第三方产品主页
+            startActivity(new Intent(mContext, HomeActivity.class));
+        }
 
-    }
+        /**
+         * 返回登录页方法
+         */
+        @JavascriptInterface
+        public void goLogin() {
+            //替换成第三方产品登录页
+            startActivity(new Intent(mContext, LoginActivity.class));
+        }
 
-    //返回登录页方法
-    @JavascriptInterface
-    public void goLogin() {
+        //更改标题 暂时无用
+        @JavascriptInterface
+        public void changeTitle(String title) {
 
-    }
-
-    //更改标题 暂时无用
-    @JavascriptInterface
-    public void changeTitle(String title)
-    {
+        }
 
     }
 }
