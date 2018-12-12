@@ -49,7 +49,8 @@ public class RepairPushActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mWebView.canGoBack()) {
-                    mWebView.goBack();
+//                    mWebView.goBack();
+                    mWebView.loadUrl("javascript:goBack()");
                 } else {
                     finish();
                 }
@@ -201,7 +202,8 @@ public class RepairPushActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KEYCODE_BACK && mWebView.canGoBack()) {
-            mWebView.goBack();
+//            mWebView.goBack();
+            mWebView.loadUrl("javascript:goBack()");
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -253,6 +255,7 @@ public class RepairPushActivity extends AppCompatActivity {
         public void goHome() {
             //替换成第三方产品主页
             startActivity(new Intent(mContext, HomeActivity.class));
+            finish();
         }
 
         /**
@@ -262,6 +265,7 @@ public class RepairPushActivity extends AppCompatActivity {
         public void goLogin() {
             //替换成第三方产品登录页
             startActivity(new Intent(mContext, LoginActivity.class));
+            finish();
         }
 
         //更改标题 暂时无用
