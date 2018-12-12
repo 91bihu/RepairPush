@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#E24542</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#E24542</color>
 
 
     <!-- 常用颜色 -->

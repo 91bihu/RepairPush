@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.ebrightmoon.dclient.R;
@@ -40,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private Context mContext;
     private Button mBtn;
+    private TextInputLayout usernameWrapper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,26 +63,42 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                 });
+        usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
+        usernameWrapper.setHint("用户名");
         mBtn = findViewById(R.id.btn);
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    getData();
+                hideKeyboard();
+                String username = usernameWrapper.getEditText().getText().toString();
+                if(TextUtils.isEmpty(username))
+                {
+                    usernameWrapper.setError("Not a valid phone!");
+                }else {
+                    getData(username);
+                }
             }
         });
 
 
     }
 
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
+                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
     /**
      *  联合登录接口
      */
-    private void getData()
+    private void getData(String username)
     {
         HashMap<String,String> params=new HashMap<>();
         HashMap<String,String> paramsarr=new HashMap<>();
         params.put("AgentId","102");
-        params.put("UserName","test1");
+        params.put("UserName",username);
         params.put("Timestamp",(int) (System.currentTimeMillis() / 1000)+"");
         params.put("UniqueCode", SystemUtils.getUUID(this));
         params.put("ExpireTime",((int) (System.currentTimeMillis() / 1000+3000))+"");
