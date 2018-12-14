@@ -97,19 +97,19 @@ public class LoginActivity extends AppCompatActivity {
     {
         HashMap<String,String> params=new HashMap<>();
         HashMap<String,String> paramsarr=new HashMap<>();
-        params.put("AgentId","102");
+        params.put("AgentId","9121");
         params.put("UserName",username);
         params.put("Timestamp",(int) (System.currentTimeMillis() / 1000)+"");
         params.put("UniqueCode", SystemUtils.getUUID(this));
         params.put("ExpireTime",((int) (System.currentTimeMillis() / 1000+3000))+"");
         paramsarr.putAll(params);
-        paramsarr.put("SecretKey","60a78c69d89");
+        paramsarr.put("SecretKey","94fee470b43270a912c27d56c27b3211");
         StringBuffer requestParams = HttpUtils.spellPostParams(paramsarr);
         params.put("SecCode", MD5.encode(requestParams.toString()));
         MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         final String requestBody= GsonUtil.gson().toJson(params);
         Request request = new Request.Builder()
-                .url("http://192.168.5.19:9094/api/unite/LoginAPP")
+                .url("http://wx.91bihu.com/api/unite/LoginAPP")
                 .post(RequestBody.create(mediaType, requestBody))
                 .build();
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                 PrefUtils.saveString(getApplicationContext(),PrefUtils.KEY.REPEAT_QUOTE, responseRepair.getRepeatQuote());
                 Intent intent=new Intent(mContext,RepairPushActivity.class);
                 intent.putExtra(Constant.PUSH_REPAIR_TITLE,"预约爱推修");
-                intent.putExtra(Constant.URL_REPAIR_URL,"http://192.168.5.19:7776");
+                intent.putExtra(Constant.URL_REPAIR_URL,"http://wx.91bihu.com/index.html");
                 startActivity(intent);
             }
         });
